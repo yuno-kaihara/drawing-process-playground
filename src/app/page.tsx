@@ -1,13 +1,11 @@
-import { fetchScenes } from "./../lib/sheets";
+import DebugTool from "@/components/debugTool";
+import Dialog from "@/components/dialog";
 
-export default async function Home() {
-  const scenes = await fetchScenes();
-
+export default function Main() {
   return (
     <div>
-      {scenes.map((scene, i) => {
-        return <div key={i}>{scene.text}</div>;
-      })}
+      <Dialog />
+      {process.env.NODE_ENV === "development" ? <DebugTool /> : null}
     </div>
   );
 }
