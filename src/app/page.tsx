@@ -1,13 +1,9 @@
-import { fetchScenes } from "./../lib/sheets";
+import Dialog from "@/components/dialog";
 
-export default async function Home() {
-  const scenes = await fetchScenes();
-
+export default function Main() {
   return (
     <div>
-      {scenes.map((scene, i) => {
-        return <div key={i}>{scene.text}</div>;
-      })}
+      <Dialog />
     </div>
   );
 }
