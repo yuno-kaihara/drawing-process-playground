@@ -6,14 +6,10 @@ import MindMap from "@/components/mindMap";
 export default function ActionOverlay() {
   const { currentScene } = useScene();
 
-  const renderActionComponent = (): React.ReactNode => {
-    switch (currentScene.actionName) {
-      case "mind_map":
-        return <MindMap />;
-      default:
-        return null;
-    }
-  };
-
-  return <div>{renderActionComponent()}</div>;
+  switch (currentScene.actionName) {
+    case "mind_map":
+      return <MindMap />;
+    default:
+      return null;
+  }
 }
