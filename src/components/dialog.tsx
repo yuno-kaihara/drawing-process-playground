@@ -67,6 +67,8 @@ export default function Dialog() {
     }
   };
 
+  if (!currentScene.text) return null;
+
   return (
     <div
       onPointerDown={onPointerDown}
@@ -84,6 +86,7 @@ export default function Dialog() {
         userSelect: "none",
         WebkitTapHighlightColor: "transparent",
         touchAction: "none", // iOSでスクロール干渉しづらくする
+        cursor: "pointer",
       }}
     >
       <div style={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
@@ -102,7 +105,7 @@ export default function Dialog() {
           transition: "opacity 120ms ease",
           pointerEvents: "none",
           animation: isTyping
-            ? "note"
+            ? "none"
             : "novel-bounce 0.9s ease-in-out infinite",
         }}
       >

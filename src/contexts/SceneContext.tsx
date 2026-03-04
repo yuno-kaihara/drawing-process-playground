@@ -54,7 +54,7 @@ export function SceneProvider({
 export function useScene() {
   const context = useContext(SceneContext);
   if (!context) {
-    throw new Error("no context");
+    throw new Error("useScene must be used within SceneProvider.");
   }
   return context;
 }
