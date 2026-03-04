@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { SceneProvider } from "@/contexts/SceneContext";
-import { fetchScenes } from "@/lib/sheets";
+import { MasterProvider } from "@/contexts/MasterContext";
+import { fetchScenes, fetchIdeaList } from "@/lib/sheets";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,13 +26,16 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const scenes = await fetchScenes();
+  const ideaList = await fetchIdeaList();
 
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <SceneProvider scenes={scenes}>{children}</SceneProvider>
+        <MasterProvider scenes={scenes} ideaList={ideaList}>
+          <SceneProvider scenes={scenes}>{children}</SceneProvider>
+        </MasterProvider>
       </body>
     </html>
   );
