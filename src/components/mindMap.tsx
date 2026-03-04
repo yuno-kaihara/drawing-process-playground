@@ -13,9 +13,7 @@ export default function MindMap() {
 
   const onPointerDown = (e: React.PointerEvent) => {
     e.preventDefault();
-    if (activeCount < ideaList.length) {
-      setActiveCount((i) => i + 1);
-    }
+    setActiveCount((i) => Math.min(i + 1, ideaList.length));
   };
 
   useEffect(() => {

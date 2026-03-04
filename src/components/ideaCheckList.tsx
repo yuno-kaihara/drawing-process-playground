@@ -25,11 +25,11 @@ export default function IdeaCheckList() {
     clearTimer();
 
     timerRef.current = window.setInterval(() => {
-      setActiveCount((i) => i + 1);
+      setActiveCount((i) => Math.min(i + 1, ideaList.length));
     }, INTERVAL_MS);
 
     return clearTimer;
-  }, []);
+  }, [ideaList.length]);
 
   useEffect(() => {
     if (activeCount >= ideaList.length) {
