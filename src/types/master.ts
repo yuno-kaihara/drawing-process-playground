@@ -5,4 +5,4 @@ export type Scene = {
 
 export type Idea = {
   text: string;
-}
+};

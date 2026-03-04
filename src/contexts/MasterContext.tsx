@@ -29,7 +29,7 @@ export function MasterProvider({
 export function useMaster() {
   const context = useContext(MasterContext);
   if (!context) {
-    throw new Error("no context");
+    throw new Error("useMaster must be used within MasterProvider.");
   }
   return context;
 }

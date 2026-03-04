@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useScene } from "@/contexts/SceneContext";
 import { useMaster } from "@/contexts/MasterContext";
 import { Idea } from "@/types/master";
@@ -13,11 +13,16 @@ export default function MindMap() {
 
   const onPointerDown = (e: React.PointerEvent) => {
     e.preventDefault();
-    setCurrentProgress((i) => i + 1);
-    if (currentProgress >= ideaList.length - 1) {
-      goToNext();
+    if (currentProgress < ideaList.length) {
+      setCurrentProgress((i) => i + 1);
     }
   };
+
+  useEffect(() => {
+    if (currentProgress >= ideaList.length) {
+      goToNext();
+    }
+  }, [currentProgress, ideaList.length, goToNext]);
 
   const renderItem = (idea: Idea, i: number): React.ReactNode => {
     return (
