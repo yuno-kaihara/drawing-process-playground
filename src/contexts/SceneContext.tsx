@@ -8,6 +8,7 @@ type SceneContextType = {
   currentScene: Scene;
   goToNext: () => void;
   restart: () => void;
+  debugJump: (i: number) => void;
 };
 
 const SceneContext = createContext<SceneContextType | null>(null);
@@ -30,9 +31,20 @@ export function SceneProvider({
     setCurrentIndex(0);
   }
 
+  function debugJump(i: number) {
+    if (process.env.NODE_ENV !== "development") {
+      console.error("not development mode.");
+    } else if (i >= scenes.length || i < 0) {
+      console.error("index is out of range.");
+    } else {
+      setCurrentIndex(i);
+      console.log(`index is ${i}.`);
+    }
+  }
+
   return (
     <SceneContext.Provider
-      value={{ currentIndex, currentScene, goToNext, restart }}
+      value={{ currentIndex, currentScene, goToNext, restart, debugJump }}
     >
       {children}
     </SceneContext.Provider>
