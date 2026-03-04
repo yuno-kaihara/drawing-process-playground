@@ -8,7 +8,6 @@ const MS_PER_CHAR = 35;
 export default function Dialog() {
   const { currentIndex, currentScene, goToNext } = useScene();
 
-  const [fullText, setFullText] = useState(currentScene.text);
   const [visibleText, setVisibleText] = useState("");
   const [isTyping, setIsTyping] = useState(true);
 
@@ -23,14 +22,13 @@ export default function Dialog() {
 
   const startTyping = () => {
     clearTimer();
-    setFullText(currentScene.text);
     setVisibleText("");
     setIsTyping(true);
   };
 
   const skipTyping = () => {
     clearTimer();
-    setVisibleText(fullText);
+    setVisibleText(currentScene.text);
     setIsTyping(false);
   };
 
@@ -39,18 +37,18 @@ export default function Dialog() {
     if (!isTyping) return;
 
     // すでに全文まで到達していたら完了にする
-    if (visibleText.length >= fullText.length) {
+    if (visibleText.length >= currentScene.text.length) {
       setIsTyping(false);
       return;
     }
 
     timerRef.current = window.setTimeout(() => {
       const nextCharIndex = visibleText.length + 1;
-      setVisibleText(fullText.slice(0, nextCharIndex));
+      setVisibleText(currentScene.text.slice(0, nextCharIndex));
     }, MS_PER_CHAR);
 
     return () => clearTimer();
-  }, [isTyping, visibleText, fullText]);
+  }, [isTyping, visibleText, currentScene.text]);
 
   // 初期開始
   useEffect(() => {
@@ -66,7 +64,6 @@ export default function Dialog() {
       skipTyping();
     } else {
       goToNext();
-      startTyping();
     }
   };
 
