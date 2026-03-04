@@ -1,11 +1,11 @@
 import DebugTool from "@/components/debugTool";
 import Dialog from "@/components/dialog";
-import MindMap from "@/components/mindMap";
+import ActionOverlay from "@/components/actionOverlay";
 
 export default function Main() {
   return (
     <div>
-      <MindMap />
+      <ActionOverlay />
       <Dialog />
       {process.env.NODE_ENV === "development" ? <DebugTool /> : null}
     </div>
