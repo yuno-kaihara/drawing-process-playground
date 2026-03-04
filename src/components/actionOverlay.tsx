@@ -2,6 +2,7 @@
 
 import { useScene } from "@/contexts/SceneContext";
 import MindMap from "@/components/mindMap";
+import IdeaCheckList from "@/components/ideaCheckList";
 
 export default function ActionOverlay() {
   const { currentScene } = useScene();
@@ -9,6 +10,8 @@ export default function ActionOverlay() {
   switch (currentScene.actionName) {
     case "mind_map":
       return <MindMap />;
+    case "idea_check":
+      return <IdeaCheckList />;
     default:
       return null;
   }

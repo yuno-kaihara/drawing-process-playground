@@ -9,22 +9,24 @@ export default function MindMap() {
   const { ideaList } = useMaster();
   const { goToNext } = useScene();
 
-  const [currentProgress, setCurrentProgress] = useState(0);
+  const [activeCount, setActiveCount] = useState(0);
 
   const onPointerDown = (e: React.PointerEvent) => {
     e.preventDefault();
-    if (currentProgress < ideaList.length) {
-      setCurrentProgress((i) => i + 1);
+    if (activeCount < ideaList.length) {
+      setActiveCount((i) => i + 1);
     }
   };
 
   useEffect(() => {
-    if (currentProgress >= ideaList.length) {
+    if (activeCount >= ideaList.length) {
       goToNext();
     }
-  }, [currentProgress, ideaList.length, goToNext]);
+  }, [activeCount, ideaList.length, goToNext]);
 
   const renderItem = (idea: Idea, i: number): React.ReactNode => {
+    const isChecked = i < activeCount;
+    const isTarget = i === activeCount;
     return (
       <div
         key={i}
@@ -33,15 +35,15 @@ export default function MindMap() {
           padding: "8px 12px",
           width: "300px",
           textAlign: "center",
-          backgroundColor: currentProgress > i ? "lightyellow" : "lightcyan",
+          backgroundColor: isChecked ? "lightyellow" : "lightcyan",
           border: "1px gray solid",
-          display: currentProgress >= i ? "block" : "none",
-          pointerEvents: currentProgress > i ? "none" : "auto",
+          display: isTarget || isChecked ? "block" : "none",
+          pointerEvents: isChecked ? "none" : "auto",
           margin: "12px",
           cursor: "pointer",
         }}
       >
-        {currentProgress === i ? "？" : idea.text}
+        {isTarget ? "？" : idea.text}
       </div>
     );
   };
