@@ -8,13 +8,20 @@ export default function DebugTool() {
   const [inputIndexValue, setIndexInputValue] = useState("");
 
   return (
-    <div>
+    <div style={{ backgroundColor: "yellow" }}>
+      <div>=== DEBUG TOOLS ===</div>
       <div>Current Index: {currentIndex}</div>
       <input
         type="number"
         onChange={(e) => setIndexInputValue(e.target.value)}
+        style={{ border: "1px solid" }}
       ></input>
-      <button onClick={() => debugJump(Number(inputIndexValue))}>遷移</button>
+      <button
+        onClick={() => debugJump(Number(inputIndexValue))}
+        style={{ border: "1px solid" }}
+      >
+        遷移
+      </button>
     </div>
   );
 }
