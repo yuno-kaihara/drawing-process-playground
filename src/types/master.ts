@@ -1,6 +1,8 @@
+import { ActionName } from "@/types/action";
+
 export type Scene = {
   text: string;
-  actionName: string;
+  actionName: ActionName;
 };
 
 export type Idea = {
