@@ -4,4 +4,6 @@ export type ActionName =
   | "line_drawing"
   | "fill"
   | "erase"
-  | "drag_light";
+  | "drag_light"
+  | "scratch1"
+  | "scratch2";
