@@ -15,10 +15,10 @@ export default function SceneProgress() {
   const percent = (currentScene.time / maxTime) * 100;
 
   return (
-    <div style={{ margin: "20px" }}>
+    <div style={{ margin: "20px 0" }}>
       <div
         style={{
-          width: "400px",
+          width: "100%",
           padding: "8px 0",
           userSelect: "none",
         }}

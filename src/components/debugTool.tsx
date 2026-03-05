@@ -8,7 +8,7 @@ export default function DebugTool() {
   const [inputIndexValue, setIndexInputValue] = useState("");
 
   return (
-    <div style={{ backgroundColor: "yellow" }}>
+    <div style={{ backgroundColor: "#fff", marginTop: 20 }}>
       <div>=== DEBUG TOOLS ===</div>
       <div>Current Index: {currentIndex}</div>
       <input

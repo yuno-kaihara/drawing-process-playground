@@ -82,7 +82,6 @@ export default function Dialog() {
         color: "#fff",
         lineHeight: 1.75,
         fontSize: 18,
-        boxShadow: "0 10px 25px rgba(0,0,0,0.3)",
         userSelect: "none",
         WebkitTapHighlightColor: "transparent",
         touchAction: "none", // スマホ対策
