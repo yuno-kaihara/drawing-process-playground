@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { useScene } from "@/contexts/SceneContext";
 import { useMaster } from "@/contexts/MasterContext";
 
@@ -7,7 +8,10 @@ export default function SceneProgress() {
   const { currentScene } = useScene();
   const { scenes } = useMaster();
 
-  const maxTime = Math.max(...scenes.map((s) => s.time));
+  const maxTime = useMemo(
+    () => Math.max(...scenes.map((s) => s.time)),
+    [scenes],
+  );
   const percent = (currentScene.time / maxTime) * 100;
 
   return (
