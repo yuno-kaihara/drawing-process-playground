@@ -5,6 +5,7 @@ import MindMap from "@/components/mindMap";
 import IdeaCheckList from "@/components/ideaCheckList";
 import LineDrawing from "@/components/lineDrawing";
 import FillAndErase from "@/components/fillAndErase";
+import DragLight from "@/components/dragLight";
 
 export default function ActionOverlay() {
   const { currentScene } = useScene();
@@ -20,6 +21,8 @@ export default function ActionOverlay() {
       return <FillAndErase mode={"fill"} />;
     case "erase":
       return <FillAndErase mode={"erase"} />;
+    case "drag_light":
+      return <DragLight />;
     default:
       return null;
   }
