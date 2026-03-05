@@ -6,8 +6,9 @@ import IdeaCheckList from "@/components/ideaCheckList";
 import LineDrawing from "@/components/lineDrawing";
 import FillAndErase from "@/components/fillAndErase";
 import DragLight from "@/components/dragLight";
-import Scratch from "./scratch";
-import BubbleTap from "./bubbleTap";
+import Scratch from "@/components/scratch";
+import BubbleTap from "@/components/bubbleTap";
+import EffectMagic from "@/components/effectMagic";
 
 export default function ActionOverlay() {
   const { currentScene } = useScene();
@@ -41,6 +42,13 @@ export default function ActionOverlay() {
       );
     case "bubble_tap":
       return <BubbleTap />;
+    case "effect_magic":
+      return (
+        <EffectMagic
+          maskImage={"/images/sample1.png"}
+          underImage={"/images/sample2.png"}
+        />
+      );
     default:
       return null;
   }
