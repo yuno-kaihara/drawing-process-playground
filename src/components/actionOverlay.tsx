@@ -4,6 +4,7 @@ import { useScene } from "@/contexts/SceneContext";
 import MindMap from "@/components/mindMap";
 import IdeaCheckList from "@/components/ideaCheckList";
 import LineDrawing from "./lineDrawing";
+import FillAndErase from "./fillAndErase";
 
 export default function ActionOverlay() {
   const { currentScene } = useScene();
@@ -15,6 +16,10 @@ export default function ActionOverlay() {
       return <IdeaCheckList />;
     case "line_drawing":
       return <LineDrawing />;
+    case "fill":
+      return <FillAndErase mode={"fill"} />;
+    case "erase":
+      return <FillAndErase mode={"erase"} />;
     default:
       return null;
   }
