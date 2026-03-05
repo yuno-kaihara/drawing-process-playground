@@ -11,7 +11,7 @@ export default function MindMap() {
 
   const [activeCount, setActiveCount] = useState(0);
 
-  const onPointerDown = (e: React.PointerEvent) => {
+  const onClick = (e: React.MouseEvent) => {
     e.preventDefault();
     setActiveCount((i) => Math.min(i + 1, ideaList.length));
   };
@@ -28,7 +28,7 @@ export default function MindMap() {
     return (
       <div
         key={i}
-        onPointerDown={onPointerDown}
+        onClick={onClick}
         style={{
           padding: "8px 12px",
           width: "300px",
@@ -39,6 +39,7 @@ export default function MindMap() {
           pointerEvents: isChecked ? "none" : "auto",
           margin: "12px",
           cursor: "pointer",
+          touchAction: "none", // スマホ対策
         }}
       >
         {isTarget ? "？" : idea.text}

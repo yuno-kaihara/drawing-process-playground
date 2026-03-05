@@ -127,6 +127,7 @@ export default function LineDrawing() {
           border: "1px solid #ccc",
           touchAction: "none",
           cursor: "crosshair",
+          pointerEvents: isCompleted ? "none" : "auto",
         }}
       />
     </div>

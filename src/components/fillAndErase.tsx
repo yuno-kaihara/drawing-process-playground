@@ -12,7 +12,7 @@ export default function FillAndErase({ mode }: Props) {
 
   const { goToNext } = useScene();
 
-  const onPointerDown = (e: React.PointerEvent) => {
+  const onClick = (e: React.MouseEvent) => {
     e.preventDefault();
     if (isClicked) return;
 
@@ -33,7 +33,7 @@ export default function FillAndErase({ mode }: Props) {
       }}
     >
       <div
-        onPointerDown={onPointerDown}
+        onClick={onClick}
         style={{
           width: "100px",
           height: "100px",
@@ -48,6 +48,7 @@ export default function FillAndErase({ mode }: Props) {
           animationFillMode: "forwards",
           cursor: "pointer",
           pointerEvents: isClicked ? "none" : "auto",
+          touchAction: "none", // スマホ対策
         }}
       />
 
