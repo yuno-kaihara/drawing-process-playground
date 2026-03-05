@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { useScene } from "@/contexts/SceneContext";
 
+const NEXT_SCENE_DELAY = 1500;
+
 type Props = {
   mode: "fill" | "erase";
 };
@@ -20,7 +22,7 @@ export default function FillAndErase({ mode }: Props) {
 
     setTimeout(() => {
       goToNext();
-    }, 1500);
+    }, NEXT_SCENE_DELAY);
   };
 
   return (

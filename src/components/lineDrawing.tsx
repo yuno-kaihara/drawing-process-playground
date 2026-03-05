@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useScene } from "@/contexts/SceneContext";
 
 const MAX_DISTANCE = 3000;
+const NEXT_SCENE_DELAY = 500;
 
 const CANVAS_WIDTH = 500;
 const CANVAS_HEIGHT = 400;
@@ -37,7 +38,7 @@ export default function LineDrawing() {
 
   useEffect(() => {
     if (isCompleted) {
-      setTimeout(goToNext, 500);
+      setTimeout(goToNext, NEXT_SCENE_DELAY);
     }
   }, [isCompleted, goToNext]);
 
