@@ -3,18 +3,20 @@
 import { useEffect, useRef, useState } from "react";
 import { useScene } from "@/contexts/SceneContext";
 
-const AREA_WIDTH = 500;
-const AREA_HEIGHT = 400;
 const POINTER_SIZE = 50;
-const COMPLETE_THRESHOLD = 0.95;
 const NEXT_SCENE_DELAY = 500;
 
 type Props = {
   maskImage: string;
   underImage: string;
+  complete_threshold: number;
 };
 
-export default function Scratch({ maskImage, underImage }: Props) {
+export default function Scratch({
+  maskImage,
+  underImage,
+  complete_threshold,
+}: Props) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const isDrawing = useRef(false);
 
@@ -27,14 +29,15 @@ export default function Scratch({ maskImage, underImage }: Props) {
     const canvas = canvasRef.current!;
     if (!canvas) return;
 
-    const ctx = canvas.getContext("2d")!;
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width;
+    canvas.height = rect.height;
 
-    canvas.width = AREA_WIDTH;
-    canvas.height = AREA_HEIGHT;
+    const ctx = canvas.getContext("2d")!;
     const img = new Image();
     img.src = maskImage;
     img.onload = () => {
-      ctx.drawImage(img, 0, 0, AREA_WIDTH, AREA_HEIGHT);
+      ctx.drawImage(img, 0, 0, rect.width, rect.height);
     };
   }, [maskImage, underImage]);
 
@@ -91,10 +94,10 @@ export default function Scratch({ maskImage, underImage }: Props) {
 
     const percent = transparent / (canvas.width * canvas.height);
 
-    const updated_progress = Math.min(percent / COMPLETE_THRESHOLD, 1);
+    const updated_progress = Math.min(percent / complete_threshold, 1);
     setProgress(updated_progress);
 
-    if (percent > COMPLETE_THRESHOLD) {
+    if (percent > complete_threshold) {
       onCleared();
     }
   };
@@ -107,16 +110,48 @@ export default function Scratch({ maskImage, underImage }: Props) {
   };
 
   return (
-    <div style={{ padding: 20 }}>
+    <div style={{ position: "relative", width: "100%", height: "100%" }}>
+      {/* 下の画像 */}
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          position: "absolute",
+          inset: 0,
+          backgroundImage: `url(${underImage})`,
+          backgroundSize: "cover",
+        }}
+        onContextMenu={(e) => e.preventDefault()}
+        draggable={false}
+      />
+
+      {/* マスク用キャンバス */}
+      {!isCleared && (
+        <canvas
+          ref={canvasRef}
+          style={{
+            width: "100%",
+            height: "100%",
+            position: "absolute",
+            inset: 0,
+            touchAction: "none", // スマホ対策
+            cursor: "pointer",
+          }}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={onPointerUp}
+          onPointerLeave={onPointerUp}
+        />
+      )}
+
       {/* 進捗バー */}
       <div
         style={{
-          width: 500,
+          position: "absolute",
+          width: "100%",
+          top: 0,
           height: 10,
-          background: "#eee",
-          marginBottom: 16,
-          borderRadius: 4,
-          overflow: "hidden",
+          background: "#fff",
         }}
       >
         <div
@@ -127,42 +162,6 @@ export default function Scratch({ maskImage, underImage }: Props) {
             transition: "width 0.1s",
           }}
         />
-      </div>
-
-      <div
-        style={{
-          position: "relative",
-          width: AREA_WIDTH,
-          height: AREA_HEIGHT,
-          userSelect: "none",
-        }}
-      >
-        {/* 下の画像 */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            backgroundImage: `url(${underImage})`,
-            backgroundSize: "cover",
-          }}
-        />
-
-        {/* スクラッチ用キャンバス */}
-        {!isCleared && (
-          <canvas
-            ref={canvasRef}
-            style={{
-              position: "absolute",
-              inset: 0,
-              touchAction: "none", // スマホ対策
-              cursor: "pointer",
-            }}
-            onPointerDown={onPointerDown}
-            onPointerMove={onPointerMove}
-            onPointerUp={onPointerUp}
-            onPointerLeave={onPointerUp}
-          />
-        )}
       </div>
     </div>
   );

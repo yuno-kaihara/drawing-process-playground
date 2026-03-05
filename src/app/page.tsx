@@ -1,12 +1,12 @@
 import DebugTool from "@/components/debugTool";
 import Dialog from "@/components/dialog";
-import ActionOverlay from "@/components/actionOverlay";
 import SceneProgress from "@/components/sceneProgress";
+import ImageCanvas from "@/components/imageCanvas";
 
 export default function Main() {
   return (
-    <div>
-      <ActionOverlay />
+    <div style={{ margin: 12 }}>
+      <ImageCanvas />
       <SceneProgress />
       <Dialog />
       {process.env.NODE_ENV === "development" ? <DebugTool /> : null}

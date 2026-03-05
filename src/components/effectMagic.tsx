@@ -3,9 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useScene } from "@/contexts/SceneContext";
 
-const AREA_WIDTH = 500;
-const AREA_HEIGHT = 400;
-const MAX_RADIUS = Math.sqrt((AREA_WIDTH / 2) ** 2 + (AREA_HEIGHT / 2) ** 2);
 const RADIUS_SPEED = 200; // px/sec
 const COMPLETE_THRESHOLD = 0.99;
 const NEXT_SCENE_DELAY = 500;
@@ -17,9 +14,10 @@ type Props = {
 
 export default function EffectMagic({ maskImage, underImage }: Props) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-
-  const isPressing = useRef(false);
+  const canvasWidth = useRef(0);
+  const canvasHeight = useRef(0);
   const radiusRef = useRef(0);
+  const isPressing = useRef(false);
   const lastTimeRef = useRef<number | null>(null);
 
   const [isCleared, setIsCleared] = useState(false);
@@ -30,16 +28,20 @@ export default function EffectMagic({ maskImage, underImage }: Props) {
     const canvas = canvasRef.current!;
     if (!canvas) return;
 
-    const ctx = canvas.getContext("2d")!;
-    canvas.width = AREA_WIDTH;
-    canvas.height = AREA_HEIGHT;
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width;
+    canvas.height = rect.height;
 
+    canvasWidth.current = canvas.width;
+    canvasHeight.current = canvas.height;
+
+    const ctx = canvas.getContext("2d")!;
     const img = new Image();
     img.src = maskImage;
     img.onload = () => {
-      ctx.drawImage(img, 0, 0, AREA_WIDTH, AREA_HEIGHT);
+      ctx.drawImage(img, 0, 0, rect.width, rect.height);
     };
-  }, [maskImage]);
+  }, [maskImage, underImage]);
 
   const eraseMask = (radius: number) => {
     const canvas = canvasRef.current!;
@@ -47,7 +49,13 @@ export default function EffectMagic({ maskImage, underImage }: Props) {
 
     ctx.globalCompositeOperation = "destination-out";
     ctx.beginPath();
-    ctx.arc(AREA_WIDTH / 2, AREA_HEIGHT / 2, radius, 0, Math.PI * 2);
+    ctx.arc(
+      canvasWidth.current / 2,
+      canvasHeight.current / 2,
+      radius,
+      0,
+      Math.PI * 2,
+    );
     ctx.fill();
   };
 
@@ -61,7 +69,10 @@ export default function EffectMagic({ maskImage, underImage }: Props) {
 
     eraseMask(radiusRef.current);
 
-    const percent = Math.min(radiusRef.current / MAX_RADIUS, 1);
+    const max_radius = Math.sqrt(
+      (canvasWidth.current / 2) ** 2 + (canvasHeight.current / 2) ** 2,
+    );
+    const percent = Math.min(radiusRef.current / max_radius, 1);
     if (percent >= COMPLETE_THRESHOLD) {
       onCleared();
       return;
@@ -93,40 +104,37 @@ export default function EffectMagic({ maskImage, underImage }: Props) {
   };
 
   return (
-    <div style={{ padding: 20 }}>
+    <div style={{ position: "relative", width: "100%", height: "100%" }}>
+      {/* 下の画像 */}
       <div
         style={{
-          position: "relative",
-          width: AREA_WIDTH,
-          height: AREA_HEIGHT,
-          userSelect: "none",
+          width: "100%",
+          height: "100%",
+          position: "absolute",
+          inset: 0,
+          backgroundImage: `url(${underImage})`,
+          backgroundSize: "cover",
         }}
-      >
-        {/* 下の画像 */}
-        <div
+        onContextMenu={(e) => e.preventDefault()}
+        draggable={false}
+      />
+
+      {/* マスク用キャンバス */}
+      {!isCleared && (
+        <canvas
+          ref={canvasRef}
           style={{
+            width: "100%",
+            height: "100%",
             position: "absolute",
             inset: 0,
-            backgroundImage: `url(${underImage})`,
-            backgroundSize: "cover",
+            touchAction: "none",
+            cursor: "pointer",
           }}
+          onPointerDown={onPointerDown}
+          onPointerUp={onPointerUp}
         />
-
-        {/* マスク用キャンバス */}
-        {!isCleared && (
-          <canvas
-            ref={canvasRef}
-            style={{
-              position: "absolute",
-              inset: 0,
-              touchAction: "none",
-              cursor: "pointer",
-            }}
-            onPointerDown={onPointerDown}
-            onPointerUp={onPointerUp}
-          />
-        )}
-      </div>
+      )}
     </div>
   );
 }
