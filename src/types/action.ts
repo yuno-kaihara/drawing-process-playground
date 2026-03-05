@@ -7,4 +7,5 @@ export type ActionName =
   | "drag_light"
   | "scratch1"
   | "scratch2"
-  | "bubble_tap";
+  | "bubble_tap"
+  | "effect_magic";
