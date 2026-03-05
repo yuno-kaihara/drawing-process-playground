@@ -3,6 +3,7 @@
 import { useScene } from "@/contexts/SceneContext";
 import MindMap from "@/components/mindMap";
 import IdeaCheckList from "@/components/ideaCheckList";
+import LineDrawing from "./lineDrawing";
 
 export default function ActionOverlay() {
   const { currentScene } = useScene();
@@ -12,6 +13,8 @@ export default function ActionOverlay() {
       return <MindMap />;
     case "idea_check":
       return <IdeaCheckList />;
+    case "line_drawing":
+      return <LineDrawing />;
     default:
       return null;
   }
