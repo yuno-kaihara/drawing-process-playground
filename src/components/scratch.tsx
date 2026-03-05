@@ -25,6 +25,8 @@ export default function Scratch({ maskImage, underImage }: Props) {
 
   useEffect(() => {
     const canvas = canvasRef.current!;
+    if (!canvas) return;
+
     const ctx = canvas.getContext("2d")!;
 
     canvas.width = AREA_WIDTH;
@@ -34,7 +36,7 @@ export default function Scratch({ maskImage, underImage }: Props) {
     img.onload = () => {
       ctx.drawImage(img, 0, 0, AREA_WIDTH, AREA_HEIGHT);
     };
-  }, []);
+  }, [maskImage, underImage]);
 
   const scratch = (x: number, y: number) => {
     const canvas = canvasRef.current;
@@ -59,6 +61,7 @@ export default function Scratch({ maskImage, underImage }: Props) {
   };
 
   const onPointerDown = (e: React.PointerEvent) => {
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
     isDrawing.current = true;
     const pos = getPos(e);
     scratch(pos.x, pos.y);
@@ -70,7 +73,8 @@ export default function Scratch({ maskImage, underImage }: Props) {
     scratch(pos.x, pos.y);
   };
 
-  const onPointerUp = () => {
+  const onPointerUp = (e: React.PointerEvent) => {
+    (e.target as HTMLElement).releasePointerCapture(e.pointerId);
     isDrawing.current = false;
   };
 
