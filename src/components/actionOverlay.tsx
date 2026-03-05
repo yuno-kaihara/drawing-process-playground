@@ -3,8 +3,8 @@
 import { useScene } from "@/contexts/SceneContext";
 import MindMap from "@/components/mindMap";
 import IdeaCheckList from "@/components/ideaCheckList";
-import LineDrawing from "./lineDrawing";
-import FillAndErase from "./fillAndErase";
+import LineDrawing from "@/components/lineDrawing";
+import FillAndErase from "@/components/fillAndErase";
 
 export default function ActionOverlay() {
   const { currentScene } = useScene();
