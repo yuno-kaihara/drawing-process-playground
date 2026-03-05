@@ -154,7 +154,7 @@ export default function Scratch({ maskImage, underImage }: Props) {
             style={{
               position: "absolute",
               inset: 0,
-              touchAction: "none",
+              touchAction: "none", // スマホ対策
               cursor: "pointer",
             }}
             onPointerDown={onPointerDown}

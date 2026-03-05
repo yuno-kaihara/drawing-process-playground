@@ -74,6 +74,7 @@ export default function BubbleTap() {
               cursor: "pointer",
               pointerEvents: isDisabled ? "none" : "auto",
               transition: "background 0.4s ease",
+              touchAction: "none", // スマホ対策
             }}
           >
             {isClicked && (

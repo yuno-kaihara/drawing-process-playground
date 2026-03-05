@@ -118,7 +118,7 @@ export default function DragLight() {
           height: LIGHT_SIZE,
           background: isCleared ? "green" : "gold",
           borderRadius: "999px",
-          touchAction: "none",
+          touchAction: "none", // スマホ対策
           cursor: "grab",
           pointerEvents: isCleared ? "none" : "auto",
         }}
