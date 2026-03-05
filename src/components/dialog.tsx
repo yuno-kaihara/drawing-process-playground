@@ -56,8 +56,7 @@ export default function Dialog() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentIndex]);
 
-  // クリック
-  const onPointerDown = (e: React.PointerEvent) => {
+  const onClick = (e: React.MouseEvent) => {
     e.preventDefault();
 
     if (isTyping) {
@@ -71,7 +70,7 @@ export default function Dialog() {
 
   return (
     <div
-      onPointerDown={onPointerDown}
+      onClick={onClick}
       style={{
         position: "relative",
         background: "rgba(0,0,0,0.65)",
@@ -85,7 +84,7 @@ export default function Dialog() {
         boxShadow: "0 10px 25px rgba(0,0,0,0.3)",
         userSelect: "none",
         WebkitTapHighlightColor: "transparent",
-        touchAction: "none", // iOSでスクロール干渉しづらくする
+        touchAction: "none", // スマホ対策
         cursor: "pointer",
       }}
     >

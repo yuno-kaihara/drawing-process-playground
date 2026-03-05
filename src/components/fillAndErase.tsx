@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { useScene } from "@/contexts/SceneContext";
 
+const NEXT_SCENE_DELAY = 1500;
+
 type Props = {
   mode: "fill" | "erase";
 };
@@ -12,7 +14,7 @@ export default function FillAndErase({ mode }: Props) {
 
   const { goToNext } = useScene();
 
-  const onPointerDown = (e: React.PointerEvent) => {
+  const onClick = (e: React.MouseEvent) => {
     e.preventDefault();
     if (isClicked) return;
 
@@ -20,7 +22,7 @@ export default function FillAndErase({ mode }: Props) {
 
     setTimeout(() => {
       goToNext();
-    }, 1500);
+    }, NEXT_SCENE_DELAY);
   };
 
   return (
@@ -33,7 +35,7 @@ export default function FillAndErase({ mode }: Props) {
       }}
     >
       <div
-        onPointerDown={onPointerDown}
+        onClick={onClick}
         style={{
           width: "100px",
           height: "100px",
@@ -48,6 +50,7 @@ export default function FillAndErase({ mode }: Props) {
           animationFillMode: "forwards",
           cursor: "pointer",
           pointerEvents: isClicked ? "none" : "auto",
+          touchAction: "none", // スマホ対策
         }}
       />
 

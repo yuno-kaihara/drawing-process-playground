@@ -5,6 +5,7 @@ import { useMaster } from "@/contexts/MasterContext";
 import { useScene } from "@/contexts/SceneContext";
 
 const INTERVAL_MS = 500;
+const NEXT_SCENE_DELAY = 1000;
 
 export default function IdeaCheckList() {
   const { ideaList } = useMaster();
@@ -34,7 +35,7 @@ export default function IdeaCheckList() {
   useEffect(() => {
     if (activeCount >= ideaList.length) {
       clearTimer();
-      setTimeout(goToNext, 1000);
+      setTimeout(goToNext, NEXT_SCENE_DELAY);
     }
   }, [activeCount, ideaList.length, goToNext]);
 
