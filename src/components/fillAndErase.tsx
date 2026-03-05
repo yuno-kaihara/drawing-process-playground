@@ -16,9 +16,7 @@ export default function FillAndErase({ mode }: Props) {
     e.preventDefault();
     if (isClicked) return;
 
-    requestAnimationFrame(() => {
-      setIsClicked(true);
-    });
+    setIsClicked(true);
 
     setTimeout(() => {
       goToNext();
@@ -39,13 +37,17 @@ export default function FillAndErase({ mode }: Props) {
         style={{
           width: "100px",
           height: "100px",
-          cursor: "pointer",
           background: mode === "fill" ? "blue" : "red",
-          animation: isClicked
+          animationName: isClicked
             ? mode === "fill"
-              ? "fillAnim 1s ease 0s 1 normal forwards running"
-              : "eraseAnim 1s ease 0s 1 normal forwards running"
+              ? "fillAnim"
+              : "eraseAnim"
             : "",
+          animationDuration: "1s",
+          animationTimingFunction: "ease",
+          animationFillMode: "forwards",
+          cursor: "pointer",
+          pointerEvents: isClicked ? "none" : "auto",
         }}
       />
 
