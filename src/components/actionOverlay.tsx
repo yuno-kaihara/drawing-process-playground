@@ -7,6 +7,7 @@ import LineDrawing from "@/components/lineDrawing";
 import FillAndErase from "@/components/fillAndErase";
 import DragLight from "@/components/dragLight";
 import Scratch from "./scratch";
+import BubbleTap from "./bubbleTap";
 
 export default function ActionOverlay() {
   const { currentScene } = useScene();
@@ -38,6 +39,8 @@ export default function ActionOverlay() {
           underImage={"/images/sample4.png"}
         />
       );
+    case "bubble_tap":
+      return <BubbleTap />;
     default:
       return null;
   }
