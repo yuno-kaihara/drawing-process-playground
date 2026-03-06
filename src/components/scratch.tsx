@@ -9,13 +9,11 @@ const NEXT_SCENE_DELAY = 500;
 
 type Props = {
   maskImage: string;
-  underImage: string;
   complete_threshold: number;
 };
 
 export default function Scratch({
   maskImage,
-  underImage,
   complete_threshold,
 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -32,17 +30,21 @@ export default function Scratch({
     const canvas = canvasRef.current!;
     if (!canvas) return;
 
+    const dpr = window.devicePixelRatio || 1;
+    const renderScale = dpr / scale;
     const rect = canvas.getBoundingClientRect();
-    canvas.width = rect.width;
-    canvas.height = rect.height;
+    canvas.width = rect.width * renderScale;
+    canvas.height = rect.height * renderScale;
 
     const ctx = canvas.getContext("2d")!;
+    ctx.scale(renderScale, renderScale);
+
     const img = new Image();
     img.src = maskImage;
     img.onload = () => {
       ctx.drawImage(img, 0, 0, rect.width, rect.height);
     };
-  }, [maskImage, underImage]);
+  }, [maskImage, scale]);
 
   const scratch = (x: number, y: number) => {
     const canvas = canvasRef.current;
@@ -121,8 +123,7 @@ export default function Scratch({
           height: "100%",
           position: "absolute",
           inset: 0,
-          backgroundImage: `url(${underImage})`,
-          backgroundSize: "cover",
+          background: "transparent",
         }}
         onContextMenu={(e) => e.preventDefault()}
         draggable={false}

@@ -10,10 +10,9 @@ const NEXT_SCENE_DELAY = 500;
 
 type Props = {
   maskImage: string;
-  underImage: string;
 };
 
-export default function EffectMagic({ maskImage, underImage }: Props) {
+export default function EffectMagic({ maskImage }: Props) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const canvasWidth = useRef(0);
   const canvasHeight = useRef(0);
@@ -31,20 +30,24 @@ export default function EffectMagic({ maskImage, underImage }: Props) {
     const canvas = canvasRef.current!;
     if (!canvas) return;
 
+    const dpr = window.devicePixelRatio || 1;
+    const renderScale = dpr / scale;
     const rect = canvas.getBoundingClientRect();
-    canvas.width = rect.width;
-    canvas.height = rect.height;
+    canvas.width = rect.width * renderScale;
+    canvas.height = rect.height * renderScale;
 
-    canvasWidth.current = canvas.width;
-    canvasHeight.current = canvas.height;
+    canvasWidth.current = rect.width;
+    canvasHeight.current = rect.height;
 
     const ctx = canvas.getContext("2d")!;
+    ctx.scale(renderScale, renderScale);
+
     const img = new Image();
     img.src = maskImage;
     img.onload = () => {
       ctx.drawImage(img, 0, 0, rect.width, rect.height);
     };
-  }, [maskImage, underImage]);
+  }, [maskImage, scale]);
 
   const eraseMask = (radius: number) => {
     const canvas = canvasRef.current!;
@@ -115,8 +118,7 @@ export default function EffectMagic({ maskImage, underImage }: Props) {
           height: "100%",
           position: "absolute",
           inset: 0,
-          backgroundImage: `url(${underImage})`,
-          backgroundSize: "cover",
+          background: "transparent",
         }}
         onContextMenu={(e) => e.preventDefault()}
         draggable={false}
