@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useScene } from "@/contexts/SceneContext";
 import { useScale } from "@/contexts/ScaleContext";
+import ProgressBar from "@/components/ui/progressBar";
 
 const POINTER_SIZE = 60;
 const NEXT_SCENE_DELAY = 500;
@@ -12,10 +13,7 @@ type Props = {
   complete_threshold: number;
 };
 
-export default function Scratch({
-  maskImage,
-  complete_threshold,
-}: Props) {
+export default function Scratch({ maskImage, complete_threshold }: Props) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const isDrawing = useRef(false);
 
@@ -147,26 +145,7 @@ export default function Scratch({
           onPointerLeave={onPointerUp}
         />
       )}
-
-      {/* 進捗バー */}
-      <div
-        style={{
-          position: "absolute",
-          width: "100%",
-          top: 0,
-          height: 10,
-          background: "#fff",
-        }}
-      >
-        <div
-          style={{
-            width: `${progress * 100}%`,
-            height: "100%",
-            background: "#000",
-            transition: "width 0.1s",
-          }}
-        />
-      </div>
+      <ProgressBar rate={progress} />
     </div>
   );
 }

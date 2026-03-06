@@ -11,7 +11,7 @@ type Props = {
 const CONTENT_WIDTH = 744;
 const CONTENT_HEIGHT = 840;
 
-export function ScaleWrapper({ children }: Props) {
+export default function ScaleWrapper({ children }: Props) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
 

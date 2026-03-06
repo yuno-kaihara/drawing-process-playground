@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useScene } from "@/contexts/SceneContext";
 import { useScale } from "@/contexts/ScaleContext";
+import ProgressBar from "@/components/ui/progressBar";
 
 const MAX_DISTANCE = 3000;
 const LINE_WIDTH = 4;
@@ -118,24 +119,7 @@ export default function LineDrawing() {
           cursor: "crosshair",
         }}
       />
-      <div
-        style={{
-          position: "absolute",
-          width: "100%",
-          top: 0,
-          height: 10,
-          background: "#fff",
-        }}
-      >
-        <div
-          style={{
-            width: `${progress * 100}%`,
-            height: "100%",
-            background: "#000",
-            transition: "width 0.1s",
-          }}
-        />
-      </div>
+      <ProgressBar rate={progress} />
     </div>
   );
 }

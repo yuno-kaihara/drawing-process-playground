@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-import { ScaleWrapper } from "@/components/scaleWrapper";
+import ScaleWrapper from "@/components/scaleWrapper";
 import { SceneProvider } from "@/contexts/SceneContext";
 import { MasterProvider } from "@/contexts/MasterContext";
 import { fetchScenes, fetchIdeaList } from "@/lib/sheets";
