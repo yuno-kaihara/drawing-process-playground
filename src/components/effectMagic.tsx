@@ -7,6 +7,7 @@ import ProgressBar from "@/components/ui/progressBar";
 
 import Lottie from "lottie-react";
 import tapAnim from "@/assets/lottie/tap.json";
+import sparkleAnim from "@/assets/lottie/sparkle.json";
 
 const RADIUS_SPEED = 200; // px/sec
 const COMPLETE_THRESHOLD = 0.99;
@@ -21,9 +22,10 @@ export default function EffectMagic({ maskImage }: Props) {
   const canvasWidth = useRef(0);
   const canvasHeight = useRef(0);
   const radiusRef = useRef(0);
-  const isPressing = useRef(false);
+  const isPressingRef = useRef(false);
   const lastTimeRef = useRef<number | null>(null);
 
+  const [isPressing, setIsPressing] = useState(false);
   const [isCleared, setIsCleared] = useState(false);
   const [progress, setProgress] = useState(0);
 
@@ -71,7 +73,7 @@ export default function EffectMagic({ maskImage }: Props) {
   };
 
   const update = (t: number) => {
-    if (!isPressing.current) return;
+    if (!isPressingRef.current) return;
 
     if (!lastTimeRef.current) lastTimeRef.current = t;
     const delta = (t - lastTimeRef.current) / 1000;
@@ -97,7 +99,8 @@ export default function EffectMagic({ maskImage }: Props) {
     if (isCleared) return;
     (e.target as HTMLElement).setPointerCapture(e.pointerId);
 
-    isPressing.current = true;
+    isPressingRef.current = true;
+    setIsPressing(true);
     lastTimeRef.current = null;
 
     requestAnimationFrame(update);
@@ -105,7 +108,8 @@ export default function EffectMagic({ maskImage }: Props) {
 
   const onPointerUp = (e: React.PointerEvent) => {
     (e.target as HTMLElement).releasePointerCapture(e.pointerId);
-    isPressing.current = false;
+    isPressingRef.current = false;
+    setIsPressing(false);
   };
 
   const onCleared = () => {
@@ -158,6 +162,19 @@ export default function EffectMagic({ maskImage }: Props) {
           pointerEvents: "none",
         }}
       />
+      {isPressing && (
+        <Lottie
+          animationData={sparkleAnim}
+          style={{
+            width: 600,
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            pointerEvents: "none",
+          }}
+        />
+      )}
     </div>
   );
 }
