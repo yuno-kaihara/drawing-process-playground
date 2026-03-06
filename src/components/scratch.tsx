@@ -5,9 +5,7 @@ import { useScene } from "@/contexts/SceneContext";
 import { useScale } from "@/contexts/ScaleContext";
 import ProgressBar from "@/components/ui/progressBar";
 import CompletedEffect from "@/components/effect/completedEffect";
-
-import Lottie from "lottie-react";
-import movePenAnim from "@/assets/lottie/move_pen.json";
+import LottieAnim from "@/components/effect/lottieAnim";
 
 const POINTER_SIZE = 60;
 const NEXT_SCENE_DELAY = 1500;
@@ -150,15 +148,7 @@ export default function Scratch({ maskImage, complete_threshold }: Props) {
         />
       )}
       <ProgressBar rate={progress} />
-      <Lottie
-        animationData={movePenAnim}
-        style={{
-          width: 100,
-          position: "absolute",
-          right: 12,
-          bottom: 12,
-        }}
-      />
+      <LottieAnim anim={"movePen"} width={100} style={"rightBottom"} />
       <CompletedEffect isCompleted={isCleared} />
     </div>
   );

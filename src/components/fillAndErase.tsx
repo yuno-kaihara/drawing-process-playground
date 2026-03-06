@@ -2,9 +2,7 @@
 
 import { useState } from "react";
 import { useScene } from "@/contexts/SceneContext";
-
-import Lottie from "lottie-react";
-import tapAnim from "@/assets/lottie/tap.json";
+import LottieAnim from "@/components/effect/lottieAnim";
 
 const NEXT_SCENE_DELAY = 1500;
 
@@ -65,16 +63,11 @@ export default function FillAndErase({ mode }: Props) {
       />
 
       {!isClicked && (
-        <Lottie
-          animationData={tapAnim}
-          style={{
-            width: 200,
-            position: "absolute",
-            top: "55%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            pointerEvents: "none",
-          }}
+        <LottieAnim
+          anim={"tap"}
+          width={200}
+          style={"center"}
+          customStyle={{ top: "55%" }}
         />
       )}
 

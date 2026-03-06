@@ -2,9 +2,7 @@
 
 import { useState } from "react";
 import { useScene } from "@/contexts/SceneContext";
-
-import Lottie from "lottie-react";
-import tapAnim from "@/assets/lottie/tap.json";
+import LottieAnim from "@/components/effect/lottieAnim";
 
 const NEXT_SCENE_DELAY = 0;
 
@@ -94,17 +92,7 @@ export default function BubbleTap() {
               />
             )}
             {isTarget && (
-              <Lottie
-                animationData={tapAnim}
-                style={{
-                  width: 200,
-                  position: "absolute",
-                  top: "50%",
-                  left: "50%",
-                  transform: "translate(-50%, -50%)",
-                  pointerEvents: "none",
-                }}
-              />
+              <LottieAnim anim={"tap"} width={200} style={"center"} />
             )}
           </div>
         );

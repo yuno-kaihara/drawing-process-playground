@@ -5,9 +5,7 @@ import { useScene } from "@/contexts/SceneContext";
 import { useMaster } from "@/contexts/MasterContext";
 import { Idea } from "@/types/master";
 import { containerStyle, innerStyle } from "./ui/mindMapItem";
-
-import Lottie from "lottie-react";
-import questionAnim from "@/assets/lottie/question.json";
+import LottieAnim from "@/components/effect/lottieAnim";
 
 const NEXT_SCENE_DELAY = 500;
 
@@ -54,15 +52,11 @@ export default function MindMap() {
           }}
         >
           {isTarget && (
-            <Lottie
-              animationData={questionAnim}
-              style={{
-                width: 80,
-                position: "relative",
-                left: "50%",
-                top: "2px",
-                transform: "translate(-50%, 0)",
-              }}
+            <LottieAnim
+              anim={"question"}
+              width={80}
+              style={"center"}
+              customStyle={{ top: "6px", transform: "translate(-50%, 0)" }}
             />
           )}
           {idea.text}

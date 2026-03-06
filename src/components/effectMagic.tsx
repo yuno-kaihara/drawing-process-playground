@@ -4,10 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useScene } from "@/contexts/SceneContext";
 import { useScale } from "@/contexts/ScaleContext";
 import ProgressBar from "@/components/ui/progressBar";
-
-import Lottie from "lottie-react";
-import tapAnim from "@/assets/lottie/tap.json";
-import sparkleAnim from "@/assets/lottie/sparkle.json";
+import LottieAnim from "@/components/effect/lottieAnim";
 
 const RADIUS_SPEED = 200; // px/sec
 const COMPLETE_THRESHOLD = 0.99;
@@ -151,29 +148,9 @@ export default function EffectMagic({ maskImage }: Props) {
         />
       )}
       <ProgressBar rate={progress} />
-      <Lottie
-        animationData={tapAnim}
-        style={{
-          width: 200,
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          pointerEvents: "none",
-        }}
-      />
+      <LottieAnim anim={"tap"} width={200} style={"center"} />
       {isPressing && (
-        <Lottie
-          animationData={sparkleAnim}
-          style={{
-            width: 600,
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            pointerEvents: "none",
-          }}
-        />
+        <LottieAnim anim={"sparkle"} width={600} style={"center"} />
       )}
     </div>
   );

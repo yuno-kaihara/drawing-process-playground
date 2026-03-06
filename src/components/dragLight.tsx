@@ -5,9 +5,7 @@ import { useScene } from "@/contexts/SceneContext";
 import { useCanvasSize } from "@/contexts/CanvasContext";
 import { useScale } from "@/contexts/ScaleContext";
 import CompletedEffect from "@/components/effect/completedEffect";
-
-import Lottie from "lottie-react";
-import dragAnim from "@/assets/lottie/drag.json";
+import LottieAnim from "@/components/effect/lottieAnim";
 
 const LIGHT_SIZE = 100;
 const GOAL_X = 75;
@@ -138,14 +136,11 @@ export default function DragLight() {
         }}
       >
         {!isDragging && !isCleared && (
-          <Lottie
-            animationData={dragAnim}
-            style={{
-              width: 100,
-              position: "absolute",
-              top: 4,
-              left: -4,
-            }}
+          <LottieAnim
+            anim={"drag"}
+            width={100}
+            style={"custom"}
+            customStyle={{ top: 4, left: -4 }}
           />
         )}
       </div>
