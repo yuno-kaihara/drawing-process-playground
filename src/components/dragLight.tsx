@@ -4,12 +4,16 @@ import { useRef, useState } from "react";
 import { useScene } from "@/contexts/SceneContext";
 import { useCanvasSize } from "@/contexts/CanvasContext";
 import { useScale } from "@/contexts/ScaleContext";
+import CompletedEffect from "@/components/effect/completedEffect";
+
+import Lottie from "lottie-react";
+import dragAnim from "@/assets/lottie/drag.json";
 
 const LIGHT_SIZE = 100;
 const GOAL_X = 75;
 const GOAL_Y = 50;
 const CLEAR_DISTANCE = 20;
-const NEXT_SCENE_DELAY = 1000;
+const NEXT_SCENE_DELAY = 1500;
 
 export default function DragLight() {
   const areaRef = useRef<HTMLDivElement>(null);
@@ -20,8 +24,8 @@ export default function DragLight() {
   const scale = useScale();
 
   const [pos, setPos] = useState({
-    x: width - LIGHT_SIZE,
-    y: height - LIGHT_SIZE,
+    x: width - LIGHT_SIZE - 20,
+    y: height - LIGHT_SIZE - 20,
   });
   const [isDragging, setIsDragging] = useState(false);
   const [isCleared, setIsCleared] = useState(false);
@@ -105,11 +109,16 @@ export default function DragLight() {
           top: GOAL_Y,
           width: LIGHT_SIZE,
           height: LIGHT_SIZE,
-          border: "2px dashed orange",
+          border: "2px dashed yellow",
           borderRadius: "50%",
           background: "rgba(255,255,0,0.5)",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
-      />
+      >
+        Here!
+      </div>
 
       {/* ドラッグ対象 */}
       <div
@@ -120,13 +129,43 @@ export default function DragLight() {
           top: pos.y,
           width: LIGHT_SIZE,
           height: LIGHT_SIZE,
-          background: isCleared ? "green" : "gold",
+          background: "yellow",
           borderRadius: "50%",
           touchAction: "none", // スマホ対策
           cursor: "grab",
           pointerEvents: isCleared ? "none" : "auto",
+          animation: "shadowPulse 2s infinite",
         }}
-      />
+      >
+        {!isDragging && !isCleared && (
+          <Lottie
+            animationData={dragAnim}
+            style={{
+              width: 100,
+              position: "absolute",
+              top: 4,
+              left: -4,
+            }}
+          />
+        )}
+      </div>
+      <CompletedEffect isCompleted={isCleared} />
+
+      <style jsx>{`
+        @keyframes shadowPulse {
+          0% {
+            filter: drop-shadow(0 0 20px rgba(255, 255, 0, 0.7));
+          }
+
+          50% {
+            filter: drop-shadow(0 0 20px rgba(255, 255, 0, 1));
+          }
+
+          100% {
+            filter: drop-shadow(0 0 20px rgba(255, 255, 0, 0.7));
+          }
+        }
+      `}</style>
     </div>
   );
 }
