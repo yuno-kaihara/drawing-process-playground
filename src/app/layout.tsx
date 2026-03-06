@@ -1,6 +1,10 @@
+import fs from "fs";
+import path from "path";
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+
 import { ScaleWrapper } from "@/components/scaleWrapper";
 import { SceneProvider } from "@/contexts/SceneContext";
 import { MasterProvider } from "@/contexts/MasterContext";
@@ -28,9 +32,15 @@ export default async function RootLayout({
 }>) {
   const scenes = await fetchScenes();
   const ideaList = await fetchIdeaList();
+  const images = getImagePreloads();
 
   return (
     <html lang="en">
+      <head>
+        {images.map((src) => (
+          <link key={src} rel="preload" as="image" href={src} />
+        ))}
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
@@ -42,4 +52,13 @@ export default async function RootLayout({
       </body>
     </html>
   );
+}
+
+function getImagePreloads() {
+  const dir = path.join(process.cwd(), "public/images");
+  const files = fs.readdirSync(dir);
+
+  return files
+    .filter((file) => /\.(png|jpg|jpeg|webp|avif)$/i.test(file))
+    .map((file) => `/images/${file}`);
 }
