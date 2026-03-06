@@ -3,6 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 import { useScene } from "@/contexts/SceneContext";
 import { useScale } from "@/contexts/ScaleContext";
+import ProgressBar from "@/components/ui/progressBar";
+
+import Lottie from "lottie-react";
+import tapAnim from "@/assets/lottie/tap.json";
 
 const RADIUS_SPEED = 200; // px/sec
 const COMPLETE_THRESHOLD = 0.99;
@@ -21,6 +25,7 @@ export default function EffectMagic({ maskImage }: Props) {
   const lastTimeRef = useRef<number | null>(null);
 
   const [isCleared, setIsCleared] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   const scale = useScale();
 
@@ -78,8 +83,9 @@ export default function EffectMagic({ maskImage }: Props) {
     const max_radius = Math.sqrt(
       (canvasWidth.current / 2) ** 2 + (canvasHeight.current / 2) ** 2,
     );
-    const percent = Math.min(radiusRef.current / max_radius, 1);
-    if (percent >= COMPLETE_THRESHOLD) {
+    const progress = Math.min(radiusRef.current / max_radius, 1);
+    setProgress(progress);
+    if (progress >= COMPLETE_THRESHOLD) {
       onCleared();
       return;
     }
@@ -140,6 +146,18 @@ export default function EffectMagic({ maskImage }: Props) {
           onPointerUp={onPointerUp}
         />
       )}
+      <ProgressBar rate={progress} />
+      <Lottie
+        animationData={tapAnim}
+        style={{
+          width: 200,
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          pointerEvents: "none",
+        }}
+      />
     </div>
   );
 }
