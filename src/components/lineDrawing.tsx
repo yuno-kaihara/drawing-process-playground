@@ -12,7 +12,7 @@ import movePenAnim from "@/assets/lottie/move_pen.json";
 const MAX_DISTANCE = 3000;
 const LINE_WIDTH = 4;
 const LINE_COLOR = "#000";
-const NEXT_SCENE_DELAY = 1000;
+const NEXT_SCENE_DELAY = 2000;
 
 export default function LineDrawing() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
