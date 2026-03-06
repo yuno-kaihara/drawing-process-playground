@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useScene } from "@/contexts/SceneContext";
 import { useScale } from "@/contexts/ScaleContext";
 import ProgressBar from "@/components/ui/progressBar";
+import CompletedEffect from "@/components/effect/completedEffect";
 
 import Lottie from "lottie-react";
 import movePenAnim from "@/assets/lottie/move_pen.json";
@@ -11,7 +12,7 @@ import movePenAnim from "@/assets/lottie/move_pen.json";
 const MAX_DISTANCE = 3000;
 const LINE_WIDTH = 4;
 const LINE_COLOR = "#000";
-const NEXT_SCENE_DELAY = 500;
+const NEXT_SCENE_DELAY = 1000;
 
 export default function LineDrawing() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -132,6 +133,7 @@ export default function LineDrawing() {
           bottom: 12,
         }}
       />
+      <CompletedEffect isCompleted={isCompleted} />
     </div>
   );
 }

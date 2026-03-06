@@ -4,7 +4,8 @@ import { useEffect, useState, useRef } from "react";
 import { useMaster } from "@/contexts/MasterContext";
 import { useScene } from "@/contexts/SceneContext";
 import { Idea } from "@/types/master";
-import { containerStyle, innerStyle } from "./ui/mindMapItem";
+import { containerStyle, innerStyle } from "@/components/ui/mindMapItem";
+import CompletedEffect from "@/components/effect/completedEffect";
 
 const INTERVAL_MS = 700;
 const NEXT_SCENE_DELAY = 500;
@@ -14,6 +15,7 @@ export default function IdeaCheckList() {
   const { goToNext } = useScene();
 
   const [activeCount, setActiveCount] = useState(0);
+  const isCompleted = activeCount > ideaList.length;
 
   const timerRef = useRef<number | null>(null);
 
@@ -35,11 +37,11 @@ export default function IdeaCheckList() {
   }, [ideaList.length]);
 
   useEffect(() => {
-    if (activeCount > ideaList.length) {
+    if (isCompleted) {
       clearTimer();
       setTimeout(goToNext, NEXT_SCENE_DELAY);
     }
-  }, [activeCount, ideaList.length, goToNext]);
+  }, [isCompleted, goToNext]);
 
   const renderItem = (idea: Idea, i: number): React.ReactNode => {
     const isChecked = i < activeCount;
@@ -60,8 +62,9 @@ export default function IdeaCheckList() {
   };
 
   return (
-    <div style={{ position: "relative" }}>
+    <div style={{ position: "relative", width: "100%", height: "100%" }}>
       {ideaList.map((idea, i) => renderItem(idea, i))}
+      <CompletedEffect isCompleted={isCompleted} />
     </div>
   );
 }

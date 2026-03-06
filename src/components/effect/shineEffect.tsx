@@ -3,10 +3,6 @@
 import { useEffect, useRef } from "react";
 import { useScene } from "@/contexts/SceneContext";
 
-export type ShineEffectHandle = {
-  trigger: () => void;
-};
-
 export default function ShineEffect() {
   const sweepRef = useRef<HTMLDivElement>(null);
 
