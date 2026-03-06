@@ -2,14 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useScene } from "@/contexts/SceneContext";
+import { useScale } from "@/contexts/ScaleContext";
 
 const MAX_DISTANCE = 3000;
-const NEXT_SCENE_DELAY = 500;
-
-const CANVAS_WIDTH = 500;
-const CANVAS_HEIGHT = 400;
 const LINE_WIDTH = 4;
 const LINE_COLOR = "#000";
+const NEXT_SCENE_DELAY = 500;
 
 export default function LineDrawing() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -20,6 +18,8 @@ export default function LineDrawing() {
   const [progress, setProgress] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
 
+  const scale = useScale();
+
   const { goToNext } = useScene();
 
   useEffect(() => {
@@ -29,12 +29,14 @@ export default function LineDrawing() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    canvas.width = CANVAS_WIDTH;
-    canvas.height = CANVAS_HEIGHT;
-    ctx.lineWidth = LINE_WIDTH;
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width;
+    canvas.height = rect.height;
+
+    ctx.lineWidth = LINE_WIDTH * scale;
     ctx.strokeStyle = LINE_COLOR;
     ctx.lineCap = "round";
-  }, []);
+  }, [scale]);
 
   useEffect(() => {
     if (isCompleted) {
@@ -50,8 +52,9 @@ export default function LineDrawing() {
     };
   };
 
-  const pointerDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
+  const pointerDown = (e: React.PointerEvent) => {
     if (isCompleted) return;
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
 
     isDrawing.current = true;
 
@@ -59,8 +62,8 @@ export default function LineDrawing() {
     lastPoint.current = pos;
   };
 
-  const pointerMove = (e: React.PointerEvent<HTMLCanvasElement>) => {
-    if (!isDrawing.current || isCompleted) return;
+  const pointerMove = (e: React.PointerEvent) => {
+    if (!isDrawing.current) return;
 
     const canvas = canvasRef.current!;
     const ctx = canvas.getContext("2d")!;
@@ -81,7 +84,7 @@ export default function LineDrawing() {
 
     totalDistance.current += distance;
 
-    const p = Math.min(totalDistance.current / MAX_DISTANCE, 1);
+    const p = Math.min(totalDistance.current / (MAX_DISTANCE * scale), 1);
     setProgress(p);
 
     if (p >= 1) {
@@ -91,21 +94,37 @@ export default function LineDrawing() {
     lastPoint.current = pos;
   };
 
-  const pointerUp = () => {
+  const pointerUp = (e: React.PointerEvent) => {
+    (e.target as HTMLElement).releasePointerCapture(e.pointerId);
     isDrawing.current = false;
     lastPoint.current = null;
   };
 
   return (
-    <div style={{ padding: 40 }}>
+    <div style={{ position: "relative", width: "100%", height: "100%" }}>
+      <canvas
+        ref={canvasRef}
+        onPointerDown={pointerDown}
+        onPointerMove={pointerMove}
+        onPointerUp={pointerUp}
+        onPointerLeave={pointerUp}
+        style={{
+          width: "100%",
+          height: "100%",
+          opacity: 0.7,
+          background: "rgba(255,255,255)",
+          position: "relative",
+          touchAction: "none",
+          cursor: "crosshair",
+        }}
+      />
       <div
         style={{
-          width: 500,
+          position: "absolute",
+          width: "100%",
+          top: 0,
           height: 10,
-          background: "#eee",
-          marginBottom: 16,
-          borderRadius: 4,
-          overflow: "hidden",
+          background: "#fff",
         }}
       >
         <div
@@ -117,20 +136,6 @@ export default function LineDrawing() {
           }}
         />
       </div>
-
-      <canvas
-        ref={canvasRef}
-        onPointerDown={pointerDown}
-        onPointerMove={pointerMove}
-        onPointerUp={pointerUp}
-        onPointerLeave={pointerUp}
-        style={{
-          border: "1px solid #ccc",
-          touchAction: "none",
-          cursor: "crosshair",
-          pointerEvents: isCompleted ? "none" : "auto",
-        }}
-      />
     </div>
   );
 }

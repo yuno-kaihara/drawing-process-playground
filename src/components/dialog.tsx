@@ -72,6 +72,7 @@ export default function Dialog() {
     <div
       onClick={onClick}
       style={{
+        width: "500px",
         position: "relative",
         background: "rgba(0,0,0,0.65)",
         border: "1px solid rgba(255,255,255,0.18)",
@@ -81,7 +82,6 @@ export default function Dialog() {
         color: "#fff",
         lineHeight: 1.75,
         fontSize: 18,
-        boxShadow: "0 10px 25px rgba(0,0,0,0.3)",
         userSelect: "none",
         WebkitTapHighlightColor: "transparent",
         touchAction: "none", // スマホ対策

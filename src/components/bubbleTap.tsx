@@ -3,9 +3,7 @@
 import { useState } from "react";
 import { useScene } from "@/contexts/SceneContext";
 
-const AREA_WIDTH = 500;
-const AREA_HEIGHT = 400;
-const NEXT_SCENE_DELAY = 1000;
+const NEXT_SCENE_DELAY = 0;
 
 type Circle = {
   x: number;
@@ -14,9 +12,9 @@ type Circle = {
 };
 
 const circles: Circle[] = [
-  { x: 120, y: 100, r: 80 },
-  { x: 320, y: 200, r: 60 },
-  { x: 220, y: 320, r: 50 },
+  { x: 83, y: 160, r: 141 },
+  { x: 472, y: 419, r: 110 },
+  { x: 624, y: 58, r: 85 },
 ];
 
 export default function BubbleTap() {
@@ -43,10 +41,9 @@ export default function BubbleTap() {
   return (
     <div
       style={{
-        width: AREA_WIDTH,
-        height: AREA_HEIGHT,
+        width: "100%",
+        height: "100%",
         position: "relative",
-        background: "gray",
         overflow: "hidden",
       }}
     >
@@ -66,11 +63,10 @@ export default function BubbleTap() {
               height: c.r * 2,
               position: "absolute",
               borderRadius: "50%",
-              background: isClicked
-                ? "rgba(255,255,255,0)"
-                : isDisabled
-                  ? "white"
-                  : "red",
+              background:
+                isClicked || isDisabled
+                  ? "rgba(255,255,255,0)"
+                  : "rgba(255,0,0,0.7)",
               cursor: "pointer",
               pointerEvents: isDisabled ? "none" : "auto",
               transition: "background 0.4s ease",
@@ -83,8 +79,8 @@ export default function BubbleTap() {
                   position: "absolute",
                   left: "50%",
                   top: "50%",
-                  width: "20px",
-                  height: "20px",
+                  width: "100%",
+                  height: "100%",
                   borderRadius: "50%",
                   transform: "translate(-50%, -50%)",
                   background: "rgba(255, 255, 255, 0.6)",
@@ -106,12 +102,12 @@ export default function BubbleTap() {
 
           60% {
             opacity: 0.5;
-            transform: translate(-50%, -50%) scale(3);
+            transform: translate(-50%, -50%) scale(1);
           }
 
           100% {
             opacity: 0;
-            transform: translate(-50%, -50%) scale(4);
+            transform: translate(-50%, -50%) scale(1);
           }
         }
       `}</style>

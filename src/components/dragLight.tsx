@@ -2,9 +2,9 @@
 
 import { useRef, useState } from "react";
 import { useScene } from "@/contexts/SceneContext";
+import { useCanvasSize } from "@/contexts/CanvasContext";
+import { useScale } from "@/contexts/ScaleContext";
 
-const AREA_WIDTH = 500;
-const AREA_HEIGHT = 400;
 const LIGHT_SIZE = 100;
 const GOAL_X = 75;
 const GOAL_Y = 50;
@@ -15,9 +15,13 @@ export default function DragLight() {
   const areaRef = useRef<HTMLDivElement>(null);
   const offset = useRef({ x: 0, y: 0 });
 
+  const { width, height } = useCanvasSize();
+
+  const scale = useScale();
+
   const [pos, setPos] = useState({
-    x: AREA_WIDTH - LIGHT_SIZE,
-    y: AREA_HEIGHT - LIGHT_SIZE,
+    x: width - LIGHT_SIZE,
+    y: height - LIGHT_SIZE,
   });
   const [isDragging, setIsDragging] = useState(false);
   const [isCleared, setIsCleared] = useState(false);
@@ -34,8 +38,8 @@ export default function DragLight() {
     if (!rect) return;
 
     offset.current = {
-      x: e.clientX - rect.left - pos.x,
-      y: e.clientY - rect.top - pos.y,
+      x: (e.clientX - rect.left) / scale - pos.x,
+      y: (e.clientY - rect.top) / scale - pos.y,
     };
   };
 
@@ -45,11 +49,11 @@ export default function DragLight() {
     const rect = areaRef.current!.getBoundingClientRect();
     if (!rect) return;
 
-    let newX = e.clientX - rect.left - offset.current.x;
-    let newY = e.clientY - rect.top - offset.current.y;
+    let newX = (e.clientX - rect.left) / scale - offset.current.x;
+    let newY = (e.clientY - rect.top) / scale - offset.current.y;
     // 領域外に出ないよう制限
-    newX = Math.max(0, Math.min(AREA_WIDTH - LIGHT_SIZE, newX));
-    newY = Math.max(0, Math.min(AREA_HEIGHT - LIGHT_SIZE, newY));
+    newX = Math.max(0, Math.min(width - LIGHT_SIZE, newX));
+    newY = Math.max(0, Math.min(height - LIGHT_SIZE, newY));
     setPos({ x: newX, y: newY });
   };
 
@@ -87,10 +91,10 @@ export default function DragLight() {
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
       style={{
-        width: AREA_WIDTH,
-        height: AREA_HEIGHT,
+        width: "100%",
+        height: "100%",
         position: "relative",
-        background: "#f0f0f0",
+        background: "rgba(0,0,0,0.3)",
       }}
     >
       {/* ゴール */}
@@ -101,9 +105,9 @@ export default function DragLight() {
           top: GOAL_Y,
           width: LIGHT_SIZE,
           height: LIGHT_SIZE,
-          border: "2px dashed red",
-          borderRadius: "999px",
-          background: "rgba(255,0,0,0.1)",
+          border: "2px dashed orange",
+          borderRadius: "50%",
+          background: "rgba(255,255,0,0.5)",
         }}
       />
 
@@ -117,7 +121,7 @@ export default function DragLight() {
           width: LIGHT_SIZE,
           height: LIGHT_SIZE,
           background: isCleared ? "green" : "gold",
-          borderRadius: "999px",
+          borderRadius: "50%",
           touchAction: "none", // スマホ対策
           cursor: "grab",
           pointerEvents: isCleared ? "none" : "auto",

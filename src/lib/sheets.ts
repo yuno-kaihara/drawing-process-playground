@@ -29,10 +29,11 @@ export async function fetchScenes(): Promise<Scene[]> {
   const [_header, ...rows] = parseCsv(csv);
 
   // NOTE: スプシの列と順番を合わせる
-  return rows.map(([text, actionName, time]) => ({
+  return rows.map(([text, actionName, time, image]) => ({
     text,
     actionName,
     time: time ? Number(time) : 0,
+    image,
   }));
 }
 

@@ -28,27 +28,16 @@ export default function ActionOverlay() {
       return <DragLight />;
     case "scratch1":
       return (
-        <Scratch
-          maskImage={"/images/sample1.png"}
-          underImage={"/images/sample2.png"}
-        />
+        <Scratch maskImage={"/images/image8.png"} complete_threshold={0.6} />
       );
     case "scratch2":
       return (
-        <Scratch
-          maskImage={"/images/sample3.png"}
-          underImage={"/images/sample4.png"}
-        />
+        <Scratch maskImage={"/images/image9.png"} complete_threshold={0.75} />
       );
     case "bubble_tap":
       return <BubbleTap />;
     case "effect_magic":
-      return (
-        <EffectMagic
-          maskImage={"/images/sample1.png"}
-          underImage={"/images/sample2.png"}
-        />
-      );
+      return <EffectMagic maskImage={"/images/image13.png"} />;
     default:
       return null;
   }
