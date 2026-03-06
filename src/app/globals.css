@@ -1,12 +1,12 @@
 @import "tailwindcss";
 
 body {
-  width: "100vw";
-  height: "100dvh";
+  width: 100vw;
+  height: 100dvh;
   margin: 0;
   background: cornsilk;
-  overflow: "hidden";
-  position: "relative";
+  overflow: hidden;
+  position: relative;
   /* 初期リサイズ直後にjs側から解除 */
   visibility: hidden;
 }
