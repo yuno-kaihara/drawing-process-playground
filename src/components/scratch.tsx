@@ -2,8 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useScene } from "@/contexts/SceneContext";
+import { useScale } from "@/contexts/ScaleContext";
 
-const POINTER_SIZE = 50;
+const POINTER_SIZE = 60;
 const NEXT_SCENE_DELAY = 500;
 
 type Props = {
@@ -22,6 +23,8 @@ export default function Scratch({
 
   const [isCleared, setIsCleared] = useState(false);
   const [progress, setProgress] = useState(0);
+
+  const scale = useScale();
 
   const { goToNext } = useScene();
 
@@ -49,7 +52,7 @@ export default function Scratch({
 
     ctx.globalCompositeOperation = "destination-out";
     ctx.beginPath();
-    ctx.arc(x, y, POINTER_SIZE, 0, Math.PI * 2);
+    ctx.arc(x, y, POINTER_SIZE * scale, 0, Math.PI * 2);
     ctx.fill();
 
     checkClear();

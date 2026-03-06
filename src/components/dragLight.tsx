@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { useScene } from "@/contexts/SceneContext";
 import { useCanvasSize } from "@/contexts/CanvasContext";
+import { useScale } from "@/contexts/ScaleContext";
 
 const LIGHT_SIZE = 100;
 const GOAL_X = 75;
@@ -15,6 +16,8 @@ export default function DragLight() {
   const offset = useRef({ x: 0, y: 0 });
 
   const { width, height } = useCanvasSize();
+
+  const scale = useScale();
 
   const [pos, setPos] = useState({
     x: width - LIGHT_SIZE,
@@ -35,8 +38,8 @@ export default function DragLight() {
     if (!rect) return;
 
     offset.current = {
-      x: e.clientX - rect.left - pos.x,
-      y: e.clientY - rect.top - pos.y,
+      x: (e.clientX - rect.left) / scale - pos.x,
+      y: (e.clientY - rect.top) / scale - pos.y,
     };
   };
 
@@ -46,8 +49,8 @@ export default function DragLight() {
     const rect = areaRef.current!.getBoundingClientRect();
     if (!rect) return;
 
-    let newX = e.clientX - rect.left - offset.current.x;
-    let newY = e.clientY - rect.top - offset.current.y;
+    let newX = (e.clientX - rect.left) / scale - offset.current.x;
+    let newY = (e.clientY - rect.top) / scale - offset.current.y;
     // 領域外に出ないよう制限
     newX = Math.max(0, Math.min(width - LIGHT_SIZE, newX));
     newY = Math.max(0, Math.min(height - LIGHT_SIZE, newY));

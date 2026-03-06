@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { ScaleWrapper } from "@/components/scaleWrapper";
 import { SceneProvider } from "@/contexts/SceneContext";
 import { MasterProvider } from "@/contexts/MasterContext";
 import { fetchScenes, fetchIdeaList } from "@/lib/sheets";
@@ -33,9 +34,11 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <MasterProvider scenes={scenes} ideaList={ideaList}>
-          <SceneProvider scenes={scenes}>{children}</SceneProvider>
-        </MasterProvider>
+        <ScaleWrapper>
+          <MasterProvider scenes={scenes} ideaList={ideaList}>
+            <SceneProvider scenes={scenes}>{children}</SceneProvider>
+          </MasterProvider>
+        </ScaleWrapper>
       </body>
     </html>
   );

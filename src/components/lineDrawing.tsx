@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useScene } from "@/contexts/SceneContext";
+import { useScale } from "@/contexts/ScaleContext";
 
 const MAX_DISTANCE = 3000;
 const LINE_WIDTH = 4;
@@ -17,6 +18,8 @@ export default function LineDrawing() {
   const [progress, setProgress] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
 
+  const scale = useScale();
+
   const { goToNext } = useScene();
 
   useEffect(() => {
@@ -30,10 +33,10 @@ export default function LineDrawing() {
     canvas.width = rect.width;
     canvas.height = rect.height;
 
-    ctx.lineWidth = LINE_WIDTH;
+    ctx.lineWidth = LINE_WIDTH * scale;
     ctx.strokeStyle = LINE_COLOR;
     ctx.lineCap = "round";
-  }, []);
+  }, [scale]);
 
   useEffect(() => {
     if (isCompleted) {
@@ -81,7 +84,7 @@ export default function LineDrawing() {
 
     totalDistance.current += distance;
 
-    const p = Math.min(totalDistance.current / MAX_DISTANCE, 1);
+    const p = Math.min(totalDistance.current / (MAX_DISTANCE * scale), 1);
     setProgress(p);
 
     if (p >= 1) {

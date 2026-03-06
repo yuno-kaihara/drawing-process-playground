@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useScene } from "@/contexts/SceneContext";
+import { useScale } from "@/contexts/ScaleContext";
 
 const RADIUS_SPEED = 200; // px/sec
 const COMPLETE_THRESHOLD = 0.99;
@@ -21,6 +22,8 @@ export default function EffectMagic({ maskImage, underImage }: Props) {
   const lastTimeRef = useRef<number | null>(null);
 
   const [isCleared, setIsCleared] = useState(false);
+
+  const scale = useScale();
 
   const { goToNext } = useScene();
 
@@ -65,7 +68,7 @@ export default function EffectMagic({ maskImage, underImage }: Props) {
     if (!lastTimeRef.current) lastTimeRef.current = t;
     const delta = (t - lastTimeRef.current) / 1000;
     lastTimeRef.current = t;
-    radiusRef.current += delta * RADIUS_SPEED;
+    radiusRef.current += delta * RADIUS_SPEED * scale;
 
     eraseMask(radiusRef.current);
 
