@@ -3,6 +3,7 @@
 import { useScene } from "@/contexts/SceneContext";
 import { CanvasContext } from "@/contexts/CanvasContext";
 import ActionOverlay from "@/components/actionOverlay";
+import ShineEffect from "./effect/shineEffect";
 
 // 元画像サイズ 1024px x 724px
 const IMAGE_WIDTH = 720;
@@ -43,6 +44,7 @@ export default function ImageCanvas() {
           <ActionOverlay />
         </CanvasContext.Provider>
       </div>
+      <ShineEffect />
     </div>
   );
 }

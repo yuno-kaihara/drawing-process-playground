@@ -5,6 +5,7 @@ export type Scene = {
   actionName: ActionName;
   time: number;
   image: string;
+  imageEffect: string;
 };
 
 export type Idea = {
