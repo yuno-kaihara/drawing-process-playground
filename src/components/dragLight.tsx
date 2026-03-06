@@ -4,14 +4,13 @@ import { useRef, useState } from "react";
 import { useScene } from "@/contexts/SceneContext";
 import { useCanvasSize } from "@/contexts/CanvasContext";
 import { useScale } from "@/contexts/ScaleContext";
-import CompletedEffect from "@/components/effect/completedEffect";
 import LottieAnim from "@/components/effect/lottieAnim";
 
 const LIGHT_SIZE = 100;
 const GOAL_X = 75;
 const GOAL_Y = 50;
 const CLEAR_DISTANCE = 20;
-const NEXT_SCENE_DELAY = 1500;
+const NEXT_SCENE_DELAY = 700;
 
 export default function DragLight() {
   const areaRef = useRef<HTMLDivElement>(null);
@@ -116,6 +115,15 @@ export default function DragLight() {
         }}
       >
         Here!
+        {isCleared && (
+          <LottieAnim
+            anim={"burst"}
+            width={220}
+            style={"center"}
+            customStyle={{ zIndex: 1 }}
+            loop={false}
+          />
+        )}
       </div>
 
       {/* ドラッグ対象 */}
@@ -144,7 +152,6 @@ export default function DragLight() {
           />
         )}
       </div>
-      <CompletedEffect isCompleted={isCleared} />
 
       <style jsx>{`
         @keyframes shadowPulse {

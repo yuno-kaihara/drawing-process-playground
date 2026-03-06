@@ -6,8 +6,16 @@ import movePenAnim from "@/assets/lottie/move_pen.json";
 import dragAnim from "@/assets/lottie/drag.json";
 import questionAnim from "@/assets/lottie/question.json";
 import checkAnim from "@/assets/lottie/check.json";
+import burstAnim from "@/assets/lottie/burst.json";
 
-type AnimKey = "tap" | "drag" | "check" | "movePen" | "sparkle" | "question";
+type AnimKey =
+  | "tap"
+  | "drag"
+  | "check"
+  | "movePen"
+  | "sparkle"
+  | "question"
+  | "burst";
 
 const ANIM_MAP = {
   tap: tapAnim,
@@ -16,6 +24,7 @@ const ANIM_MAP = {
   movePen: movePenAnim,
   sparkle: sparkleAnim,
   question: questionAnim,
+  burst: burstAnim,
 };
 
 type StyleKey = "center" | "rightBottom" | "custom";
