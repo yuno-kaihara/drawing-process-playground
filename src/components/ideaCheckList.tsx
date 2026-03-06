@@ -3,9 +3,11 @@
 import { useEffect, useState, useRef } from "react";
 import { useMaster } from "@/contexts/MasterContext";
 import { useScene } from "@/contexts/SceneContext";
+import { Idea } from "@/types/master";
+import { containerStyle, innerStyle } from "./ui/mindMapItem";
 
-const INTERVAL_MS = 500;
-const NEXT_SCENE_DELAY = 1000;
+const INTERVAL_MS = 700;
+const NEXT_SCENE_DELAY = 500;
 
 export default function IdeaCheckList() {
   const { ideaList } = useMaster();
@@ -26,80 +28,40 @@ export default function IdeaCheckList() {
     clearTimer();
 
     timerRef.current = window.setInterval(() => {
-      setActiveCount((i) => Math.min(i + 1, ideaList.length));
+      setActiveCount((i) => i + 1);
     }, INTERVAL_MS);
 
     return clearTimer;
   }, [ideaList.length]);
 
   useEffect(() => {
-    if (activeCount >= ideaList.length) {
+    if (activeCount > ideaList.length) {
       clearTimer();
       setTimeout(goToNext, NEXT_SCENE_DELAY);
     }
   }, [activeCount, ideaList.length, goToNext]);
 
-  return (
-    <div>
-      <ul
+  const renderItem = (idea: Idea, i: number): React.ReactNode => {
+    const isChecked = i < activeCount;
+
+    return (
+      <div
+        key={i}
         style={{
-          listStyle: "none",
-          padding: 0,
-          margin: 0,
-          display: "grid",
-          gap: 10,
+          ...containerStyle(i),
+          // 表示/非表示切り替え
+          opacity: isChecked ? 1 : 0,
+          transition: "opacity 0.7s",
         }}
       >
-        {ideaList.map((idea, i) => {
-          const isChecked = i < activeCount;
+        <div style={innerStyle(i)}>{idea.text}</div>
+      </div>
+    );
+  };
 
-          return (
-            <li
-              key={i}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 10,
-              }}
-            >
-              <span
-                aria-hidden
-                style={{
-                  width: 18,
-                  height: 18,
-                  borderRadius: 4,
-                  border: "1px solid rgba(0,0,0,0.35)",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  background: isChecked ? "rgba(0,0,0,0.08)" : "transparent",
-                }}
-              >
-                <span
-                  style={{
-                    fontSize: 14,
-                    lineHeight: 1,
-                    opacity: isChecked ? 1 : 0,
-                    transform: isChecked ? "scale(1)" : "scale(0.6)",
-                    transition: "opacity 180ms ease, transform 180ms ease",
-                  }}
-                >
-                  ✓
-                </span>
-              </span>
-
-              <span
-                style={{
-                  opacity: isChecked ? 1 : 0.65,
-                  transition: "opacity 180ms ease",
-                }}
-              >
-                {idea.text}
-              </span>
-            </li>
-          );
-        })}
-      </ul>
+  return (
+    <div style={{ position: "relative" }}>
+      {ideaList.map((idea, i) => renderItem(idea, i))}
     </div>
   );
 }
